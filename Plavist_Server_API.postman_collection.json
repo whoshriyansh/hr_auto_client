@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "Plavist Server API",
-    "description": "Complete API collection for Plavist HR Platform. Login first — the token is saved automatically to the collection variable `authToken`.",
+    "name": "hr_auto Server API",
+    "description": "Complete API collection for hr_auto HR Platform. Login first — the token is saved automatically to the collection variable `authToken`.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -100,7 +100,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"admin@plavist.com\",\n  \"password\": \"Admin1234\",\n  \"role\": \"admin\"\n}"
+              "raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"admin@hr_auto.com\",\n  \"password\": \"Admin1234\",\n  \"role\": \"admin\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/auth/register",
@@ -121,7 +121,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@plavist.com\",\n  \"otp\": \"PASTE_OTP_FROM_REGISTER_RESPONSE\"\n}"
+              "raw": "{\n  \"email\": \"admin@hr_auto.com\",\n  \"otp\": \"PASTE_OTP_FROM_REGISTER_RESPONSE\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/auth/verify-email",
@@ -160,7 +160,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@plavist.com\",\n  \"password\": \"Admin1234\"\n}"
+              "raw": "{\n  \"email\": \"admin@hr_auto.com\",\n  \"password\": \"Admin1234\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/auth/login",
@@ -193,7 +193,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@plavist.com\"\n}"
+              "raw": "{\n  \"email\": \"admin@hr_auto.com\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/auth/forgot-password",
@@ -214,7 +214,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@plavist.com\",\n  \"otp\": \"PASTE_OTP_HERE\",\n  \"newPassword\": \"NewAdmin1234\"\n}"
+              "raw": "{\n  \"email\": \"admin@hr_auto.com\",\n  \"otp\": \"PASTE_OTP_HERE\",\n  \"newPassword\": \"NewAdmin1234\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/auth/reset-password",
@@ -386,7 +386,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Plavist Technologies\",\n  \"description\": \"An AI-powered HR tech company revolutionizing recruitment\",\n  \"industry\": \"Technology\",\n  \"size\": \"11-50\",\n  \"logo\": \"https://example.com/logo.png\",\n  \"socialMedia\": {\n    \"linkedin\": \"https://linkedin.com/company/plavist\",\n    \"x\": \"https://x.com/plavist\",\n    \"instagram\": \"https://instagram.com/plavist\"\n  },\n  \"location\": {\n    \"address\": \"123 Tech Park\",\n    \"city\": \"Bangalore\",\n    \"state\": \"Karnataka\",\n    \"zip\": \"560001\"\n  }\n}"
+              "raw": "{\n  \"name\": \"hr_auto Technologies\",\n  \"description\": \"An AI-powered HR tech company revolutionizing recruitment\",\n  \"industry\": \"Technology\",\n  \"size\": \"11-50\",\n  \"logo\": \"https://example.com/logo.png\",\n  \"socialMedia\": {\n    \"linkedin\": \"https://linkedin.com/company/hr_auto\",\n    \"x\": \"https://x.com/hr_auto\",\n    \"instagram\": \"https://instagram.com/hr_auto\"\n  },\n  \"location\": {\n    \"address\": \"123 Tech Park\",\n    \"city\": \"Bangalore\",\n    \"state\": \"Karnataka\",\n    \"zip\": \"560001\"\n  }\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/company",

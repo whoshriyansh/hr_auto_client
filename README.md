@@ -1,6 +1,6 @@
-# 🚀 Plavist - AI-Powered HR Automation Platform
+# 🚀 hr_auto - AI-Powered HR Automation Platform
 
-Plavist is a modern HR automation platform designed to streamline the hiring process with AI-powered interview screening, intelligent candidate management, and comprehensive analytics.
+hr_auto is a modern HR automation platform designed to streamline the hiring process with AI-powered interview screening, intelligent candidate management, and comprehensive analytics.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.1.6-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
@@ -89,8 +89,8 @@ src/
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-org/plavist-client.git
-   cd plavist-client
+   git clone https://github.com/your-org/hr_auto-client.git
+   cd hr_auto-client
    ```
 
 2. **Install dependencies**
@@ -116,7 +116,7 @@ src/
 
 Use these credentials to test the dashboard:
 
-- **Email:** `demo@plavist.com`
+- **Email:** `demo@hr_auto.com`
 - **Password:** `demo123`
 
 ## 📄 Pages Overview
@@ -263,7 +263,7 @@ This project is licensed under the MIT License.
 
 ---
 
-Built with ❤️ by the Plavist Team
+Built with ❤️ by the hr_auto Team
 
 ## Deploy on Vercel
 
