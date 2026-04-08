@@ -1,0 +1,1600 @@
+{
+  "info": {
+    "name": "Plavist Server API",
+    "description": "Complete API collection for Plavist HR Platform. Login first — the token is saved automatically to the collection variable `authToken`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8001/api",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "companyId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "jobId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "applicationId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "questionId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "interviewToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "waitlistId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "razorpayOrderId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "    pm.collectionVariables.set('authToken', json.data.token);",
+                  "    console.log('Token saved automatically');",
+                  "}",
+                  "if (json.data && json.data.user && json.data.user._id) {",
+                  "    pm.collectionVariables.set('userId', json.data.user._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"admin@plavist.com\",\n  \"password\": \"Admin1234\",\n  \"role\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@plavist.com\",\n  \"otp\": \"PASTE_OTP_FROM_REGISTER_RESPONSE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify-email",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "verify-email"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "    pm.collectionVariables.set('authToken', json.data.token);",
+                  "    console.log('Token saved: ' + json.data.token.substring(0, 20) + '...');",
+                  "}",
+                  "if (json.data && json.data.user && json.data.user._id) {",
+                  "    pm.collectionVariables.set('userId', json.data.user._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@plavist.com\",\n  \"password\": \"Admin1234\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@plavist.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "forgot-password"]
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@plavist.com\",\n  \"otp\": \"PASTE_OTP_HERE\",\n  \"newPassword\": \"NewAdmin1234\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "reset-password"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me"]
+            }
+          }
+        },
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\",\n  \"email\": \"newemail@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me"]
+            }
+          }
+        },
+        {
+          "name": "Delete My Account",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me"]
+            }
+          }
+        },
+        {
+          "name": "Get All Users (Super Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "search", "value": "", "disabled": true },
+                { "key": "role", "value": "", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Users with Stats (Super Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/with-stats?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "with-stats"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "search", "value": "", "disabled": true },
+                { "key": "role", "value": "", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get User by ID (Super Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update User (Super Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Admin\",\n  \"role\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete User (Super Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Company",
+      "item": [
+        {
+          "name": "Create Company",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.company && json.data.company._id) {",
+                  "    pm.collectionVariables.set('companyId', json.data.company._id);",
+                  "    console.log('Company ID saved: ' + json.data.company._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Plavist Technologies\",\n  \"description\": \"An AI-powered HR tech company revolutionizing recruitment\",\n  \"industry\": \"Technology\",\n  \"size\": \"11-50\",\n  \"logo\": \"https://example.com/logo.png\",\n  \"socialMedia\": {\n    \"linkedin\": \"https://linkedin.com/company/plavist\",\n    \"x\": \"https://x.com/plavist\",\n    \"instagram\": \"https://instagram.com/plavist\"\n  },\n  \"location\": {\n    \"address\": \"123 Tech Park\",\n    \"city\": \"Bangalore\",\n    \"state\": \"Karnataka\",\n    \"zip\": \"560001\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/company",
+              "host": ["{{baseUrl}}"],
+              "path": ["company"]
+            }
+          }
+        },
+        {
+          "name": "Get All Companies (Public)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/company?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["company"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "search", "value": "", "disabled": true },
+                { "key": "size", "value": "", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get My Company",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/company/my",
+              "host": ["{{baseUrl}}"],
+              "path": ["company", "my"]
+            }
+          }
+        },
+        {
+          "name": "Get Company by ID",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/company/{{companyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["company", "{{companyId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Company",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated company description — AI-powered HR platform\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/company/{{companyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["company", "{{companyId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Company",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/company/{{companyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["company", "{{companyId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Jobs",
+      "item": [
+        {
+          "name": "Create Job (Manual)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.job && json.data.job._id) {",
+                  "    pm.collectionVariables.set('jobId', json.data.job._id);",
+                  "    console.log('Job ID saved: ' + json.data.job._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Senior Full Stack Developer\",\n  \"description\": \"We are looking for an experienced Full Stack Developer to join our engineering team. You will be responsible for building and maintaining web applications using React and Node.js. Strong understanding of MongoDB, REST APIs, and cloud deployment is required.\",\n  \"mode\": \"remote\",\n  \"workType\": \"full-time\",\n  \"experienceLevel\": \"senior-level\",\n  \"applicationDeadline\": \"2026-04-01T00:00:00.000Z\",\n  \"skills\": [\"javascript\", \"react\", \"nodejs\", \"mongodb\", \"express\", \"typescript\", \"aws\", \"docker\", \"git\"],\n  \"location\": {\n    \"address\": \"123 Tech Park\",\n    \"city\": \"Bangalore\",\n    \"state\": \"Karnataka\",\n    \"zip\": \"560001\"\n  },\n  \"salary\": 120000,\n  \"disclosed\": true,\n  \"equity\": 0.5,\n  \"status\": \"published\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/jobs/create",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "create"]
+            }
+          }
+        },
+        {
+          "name": "Create Job (AI)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.job && json.data.job._id) {",
+                  "    pm.collectionVariables.set('jobId', json.data.job._id);",
+                  "    console.log('Job ID saved: ' + json.data.job._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Backend Engineer\",\n  \"description\": \"We need a backend engineer proficient in Node.js, Express, and PostgreSQL to build scalable REST APIs for our fintech product.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/jobs/create/ai",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "create", "ai"]
+            }
+          }
+        },
+        {
+          "name": "Get All Jobs (Public)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jobs?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "search", "value": "", "disabled": true },
+                { "key": "skills", "value": "", "disabled": true },
+                { "key": "experienceLevel", "value": "", "disabled": true },
+                { "key": "workType", "value": "", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get My Jobs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/me?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "me"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Job by ID",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Job",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"published\",\n  \"salary\": 130000\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Job",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}"]
+            }
+          }
+        },
+        {
+          "name": "Job Stats (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Job Stats Platform (Super Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/stats/admin",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "stats", "admin"]
+            }
+          }
+        },
+        {
+          "name": "Get All Jobs (Super Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/all?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "all"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "search", "value": "", "disabled": true },
+                { "key": "status", "value": "", "disabled": true },
+                { "key": "experienceLevel", "value": "", "disabled": true },
+                { "key": "workType", "value": "", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Single Job Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}", "stats"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Questions",
+      "item": [
+        {
+          "name": "Create Questions (AI Generated)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.question && json.data.question._id) {",
+                  "    pm.collectionVariables.set('questionId', json.data.question._id);",
+                  "    console.log('Question ID saved: ' + json.data.question._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jobId\": \"{{jobId}}\",\n  \"difficulty\": \"mixed\",\n  \"experienceLevel\": \"senior\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/question",
+              "host": ["{{baseUrl}}"],
+              "path": ["question"]
+            }
+          }
+        },
+        {
+          "name": "Get All Questions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/question?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["question"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "jobId", "value": "", "disabled": true },
+                { "key": "difficulty", "value": "", "disabled": true },
+                { "key": "experienceLevel", "value": "", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Questions by Job ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/question/job/{{jobId}}?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["question", "job", "{{jobId}}"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Question by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/question/{{questionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["question", "{{questionId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Question",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"difficulty\": \"hard\",\n  \"questions\": [\n    { \"question\": \"Explain event loop in Node.js\", \"difficulty\": \"hard\" },\n    { \"question\": \"What is closure in JavaScript?\", \"difficulty\": \"medium\" },\n    { \"question\": \"Explain MongoDB aggregation pipeline\", \"difficulty\": \"hard\" },\n    { \"question\": \"What is middleware in Express.js?\", \"difficulty\": \"easy\" },\n    { \"question\": \"Explain React virtual DOM\", \"difficulty\": \"medium\" }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/question/{{questionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["question", "{{questionId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Question",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/question/{{questionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["question", "{{questionId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Applications",
+      "item": [
+        {
+          "name": "Apply for Job (Public — Upload Resume)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.application && json.data.application._id) {",
+                  "    pm.collectionVariables.set('applicationId', json.data.application._id);",
+                  "    console.log('Application ID saved: ' + json.data.application._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "John Doe", "type": "text" },
+                {
+                  "key": "email",
+                  "value": "john.doe@example.com",
+                  "type": "text"
+                },
+                { "key": "phone", "value": "+919876543210", "type": "text" },
+                { "key": "jobId", "value": "{{jobId}}", "type": "text" },
+                {
+                  "key": "coverLetter",
+                  "value": "I am passionate about full-stack development and have 5 years of experience with React and Node.js.",
+                  "type": "text"
+                },
+                { "key": "resume", "type": "file", "src": "" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/application/apply",
+              "host": ["{{baseUrl}}"],
+              "path": ["application", "apply"]
+            },
+            "description": "Upload a PDF resume file in the 'resume' field. Set the file path in the 'src' of the resume form-data entry."
+          }
+        },
+        {
+          "name": "Get All Applications (Super Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/application?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["application"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "search", "value": "", "disabled": true },
+                { "key": "experienceLevel", "value": "", "disabled": true },
+                { "key": "analysisResume", "value": "", "disabled": true },
+                { "key": "aiScore", "value": "", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Applications for Job",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/application/job/{{jobId}}?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["application", "job", "{{jobId}}"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Single Application",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/application/{{applicationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["application", "{{applicationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Application Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"pending\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/application/{{applicationId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["application", "{{applicationId}}", "status"]
+            }
+          }
+        },
+        {
+          "name": "Shortlist Application (Auto-Schedules Interview)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// The shortlist response doesn't directly return the interview token.",
+                  "// Check your server logs or the interviews endpoint for the token.",
+                  "console.log('Application shortlisted — interview auto-scheduled.');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/application/{{applicationId}}/shortlist",
+              "host": ["{{baseUrl}}"],
+              "path": ["application", "{{applicationId}}", "shortlist"]
+            },
+            "description": "Shortlists the application AND automatically schedules an AI interview. Check server logs for the interview URL/token."
+          }
+        },
+        {
+          "name": "Delete Application",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/application/{{applicationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["application", "{{applicationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Application Stats (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/application/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["application", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Application Stats Platform (Super Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/application/stats/admin",
+              "host": ["{{baseUrl}}"],
+              "path": ["application", "stats", "admin"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Interviews",
+      "item": [
+        {
+          "name": "Get All Interviews (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.length > 0 && json.data[0].token) {",
+                  "    pm.collectionVariables.set('interviewToken', json.data[0].token);",
+                  "    console.log('Interview token saved: ' + json.data[0].token.substring(0, 20) + '...');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/interview?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["interview"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "jobId", "value": "", "disabled": true },
+                { "key": "companyId", "value": "", "disabled": true },
+                { "key": "applicationId", "value": "", "disabled": true },
+                { "key": "search", "value": "", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get My Interviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/interview/my?jobId={{jobId}}&companyId={{companyId}}&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["interview", "my"],
+              "query": [
+                { "key": "jobId", "value": "{{jobId}}" },
+                { "key": "companyId", "value": "{{companyId}}" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Start Interview (No message — First call)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/interview/conversation/{{interviewToken}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["interview", "conversation", "{{interviewToken}}"]
+            },
+            "description": "First call — send empty body or no message. AI starts the interview with a greeting and asks the first question. No JWT needed."
+          }
+        },
+        {
+          "name": "Send Answer (Conversation — No Auth)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"The event loop is the mechanism that allows Node.js to perform non-blocking I/O operations despite JavaScript being single-threaded. It continuously checks the call stack and the callback queue, enabling handling thousands of concurrent connections efficiently.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/interview/conversation/{{interviewToken}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["interview", "conversation", "{{interviewToken}}"]
+            },
+            "description": "Subsequent calls — send candidate's answer in message. AI evaluates and responds with next question, follow-up, or ends the interview. Same endpoint as start."
+          }
+        },
+        {
+          "name": "End Interview (Manual — No Auth)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/interview/end/{{interviewToken}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["interview", "end", "{{interviewToken}}"]
+            },
+            "description": "Manually end the interview. Queues the final AI analysis, sends a completion email to the candidate, and returns time taken."
+          }
+        },
+        {
+          "name": "Interview Stats (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/interview/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["interview", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Interview Stats Platform (Super Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/interview/stats/admin",
+              "host": ["{{baseUrl}}"],
+              "path": ["interview", "stats", "admin"]
+            }
+          }
+        },
+        {
+          "name": "Get Company Interviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/interview/company?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["interview", "company"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "jobId", "value": "", "disabled": true }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI Settings",
+      "item": [
+        {
+          "name": "Get AI Settings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ai-settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["ai-settings"]
+            },
+            "description": "Get the AI settings for the logged-in user's company. Returns null with usingDefaults: true if no custom settings saved yet."
+          }
+        },
+        {
+          "name": "Save AI Settings (Create / Update)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interview\": {\n    \"maxQuestions\": 5,\n    \"timeLimitMinutes\": 30,\n    \"difficulty\": \"mixed\",\n    \"behaviour\": \"professional and encouraging\",\n    \"customPrompt\": \"\",\n    \"followUpEnabled\": true,\n    \"maxFollowUps\": 1\n  },\n  \"resumeAnalyser\": {\n    \"strictness\": \"moderate\",\n    \"minimumMatchScore\": 40,\n    \"customPrompt\": \"\"\n  },\n  \"finalAnalyser\": {\n    \"autoReject\": true,\n    \"autoRejectThreshold\": 30,\n    \"autoShortlistThreshold\": 70,\n    \"customPrompt\": \"\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ai-settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["ai-settings"]
+            },
+            "description": "Create or update AI settings for the company. You can send any combination of the three sections: interview, resumeAnalyser, finalAnalyser."
+          }
+        },
+        {
+          "name": "Delete AI Settings (Revert to Defaults)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ai-settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["ai-settings"]
+            },
+            "description": "Delete custom AI settings — the system will use defaults for everything."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Skills",
+      "item": [
+        {
+          "name": "Get All Skills",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/skills",
+              "host": ["{{baseUrl}}"],
+              "path": ["skills"]
+            },
+            "description": "Get all available skills from the platform (derived from the Jobs model enum). Public — no auth required."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Candidates",
+      "item": [
+        {
+          "name": "Create Candidate Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/candidates/create",
+              "host": ["{{baseUrl}}"],
+              "path": ["candidates", "create"]
+            }
+          }
+        },
+        {
+          "name": "Get My Candidate Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/candidates/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["candidates", "me"]
+            }
+          }
+        },
+        {
+          "name": "Get All Candidates",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/candidates",
+              "host": ["{{baseUrl}}"],
+              "path": ["candidates"]
+            }
+          }
+        },
+        {
+          "name": "Get Candidate by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/candidates/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["candidates", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Candidate",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/candidates/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["candidates", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Candidate",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/candidates/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["candidates", "{{userId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Company Dashboard (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard/company",
+              "host": ["{{baseUrl}}"],
+              "path": ["dashboard", "company"]
+            },
+            "description": "Full company dashboard — job stats, application stats, interview stats, charts data (jobs with applications, applications by status, applications over 30 days), and recent items."
+          }
+        },
+        {
+          "name": "Super Admin Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard/admin",
+              "host": ["{{baseUrl}}"],
+              "path": ["dashboard", "admin"]
+            },
+            "description": "Platform-wide dashboard — total users, companies, jobs, applications, interviews, charts by status, top companies, applications over 30 days, recent users and applications."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Waitlist",
+      "description": "Waitlist + Early Access payment system. While waitlist is active, register/login are blocked. Super admin can toggle waitlist, set price, manage entries.",
+      "item": [
+        {
+          "name": "Get Platform Config (Public)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/waitlist/platform-config",
+              "host": ["{{baseUrl}}"],
+              "path": ["waitlist", "platform-config"]
+            },
+            "description": "Returns whether waitlist is active, the early access price (in paise), and the cal.com booking URL."
+          }
+        },
+        {
+          "name": "Join Waitlist",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.entry && json.data.entry._id) {",
+                  "  pm.collectionVariables.set('waitlistId', json.data.entry._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"+919876543210\",\n  \"source\": \"landing-page\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/waitlist/join",
+              "host": ["{{baseUrl}}"],
+              "path": ["waitlist", "join"]
+            },
+            "description": "Sign up for the waitlist. Returns entry with _id. Duplicate emails return existing entry."
+          }
+        },
+        {
+          "name": "Check Email Status",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/waitlist/check/john@example.com",
+              "host": ["{{baseUrl}}"],
+              "path": ["waitlist", "check", "john@example.com"]
+            },
+            "description": "Check waitlist + payment status for a given email."
+          }
+        },
+        {
+          "name": "Create Payment Order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.orderId) {",
+                  "  pm.collectionVariables.set('razorpayOrderId', json.data.orderId);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/waitlist/payment/order",
+              "host": ["{{baseUrl}}"],
+              "path": ["waitlist", "payment", "order"]
+            },
+            "description": "Creates a Razorpay order for the early access fee. Returns orderId, amount, currency, and keyId to initialise the Razorpay checkout on the frontend."
+          }
+        },
+        {
+          "name": "Verify Payment",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"razorpay_order_id\": \"order_XXXXXXXXXXXXX\",\n  \"razorpay_payment_id\": \"pay_XXXXXXXXXXXXX\",\n  \"razorpay_signature\": \"HMAC_SIGNATURE_FROM_RAZORPAY\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/waitlist/payment/verify",
+              "host": ["{{baseUrl}}"],
+              "path": ["waitlist", "payment", "verify"]
+            },
+            "description": "Verifies the Razorpay payment signature. On success, marks the entry as paid and returns the cal.com booking URL for the frontend to redirect to."
+          }
+        },
+        {
+          "name": "Get Admin Config (Super Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/waitlist/admin/config",
+              "host": ["{{baseUrl}}"],
+              "path": ["waitlist", "admin", "config"]
+            },
+            "description": "Returns all platform config keys: waitlist_active, early_access_price, cal_booking_url."
+          }
+        },
+        {
+          "name": "Update Config (Super Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"waitlist_active\": false,\n  \"early_access_price\": 49900,\n  \"cal_booking_url\": \"https://cal.com/your-username/30min\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/waitlist/admin/config",
+              "host": ["{{baseUrl}}"],
+              "path": ["waitlist", "admin", "config"]
+            },
+            "description": "Update platform config. Set waitlist_active=false to open registration. early_access_price is in paise (49900 = ₹499). Set cal_booking_url to your cal.com link."
+          }
+        },
+        {
+          "name": "Get Waitlist Stats (Super Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/waitlist/admin/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["waitlist", "admin", "stats"]
+            },
+            "description": "Stats: total, pending, paid, approved, rejected, total revenue in paise and rupees."
+          }
+        },
+        {
+          "name": "Get All Waitlist Entries (Super Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/waitlist/admin/all?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["waitlist", "admin", "all"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "status", "value": "", "disabled": true },
+                { "key": "paymentStatus", "value": "", "disabled": true },
+                { "key": "search", "value": "", "disabled": true }
+              ]
+            },
+            "description": "Paginated list of all waitlist entries. Filter by status (pending/paid/approved/rejected), paymentStatus, or search by name/email."
+          }
+        },
+        {
+          "name": "Get Single Waitlist Entry (Super Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/waitlist/admin/{{waitlistId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["waitlist", "admin", "{{waitlistId}}"]
+            }
+          }
+        },
+        {
+          "name": "Approve Early Access (Super Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/waitlist/admin/{{waitlistId}}/approve",
+              "host": ["{{baseUrl}}"],
+              "path": ["waitlist", "admin", "{{waitlistId}}", "approve"]
+            },
+            "description": "Marks the entry as approved and sets earlyAccessGrantedAt timestamp."
+          }
+        },
+        {
+          "name": "Reject Entry (Super Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/waitlist/admin/{{waitlistId}}/reject",
+              "host": ["{{baseUrl}}"],
+              "path": ["waitlist", "admin", "{{waitlistId}}", "reject"]
+            }
+          }
+        },
+        {
+          "name": "Update Admin Notes (Super Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"Spoke on call — promising user, high priority.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/waitlist/admin/{{waitlistId}}/notes",
+              "host": ["{{baseUrl}}"],
+              "path": ["waitlist", "admin", "{{waitlistId}}", "notes"]
+            }
+          }
+        },
+        {
+          "name": "Delete Waitlist Entry (Super Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/waitlist/admin/{{waitlistId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["waitlist", "admin", "{{waitlistId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
